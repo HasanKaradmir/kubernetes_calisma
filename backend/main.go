@@ -40,5 +40,5 @@ func main() {
 	})
 
 	// start the server on localhost:5500
-	log.Fatal(http.ListenAndServe("127.0.0.1:5500", nil))
+	log.Fatal(http.ListenAndServe("127.0.0.1:80", nil))
 }

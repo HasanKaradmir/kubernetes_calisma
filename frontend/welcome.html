@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <script>
+      // get the URL parameters
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const name = urlParams.get('name');
+      const lastName = urlParams.get('lastName');
+  
+      // create the welcome message
+      const welcomeMessage = `Hosgeldin ${name} ${lastName}!`;
+  
+      // display the welcome message
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = welcomeMessage;
+      messageDiv.classList.add("welcomeMessage");
+      document.body.appendChild(messageDiv);
+    </script>
+  </body>
+</html>

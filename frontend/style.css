@@ -8,3 +8,18 @@
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
     }
+
+.welcomeMessage {
+    width: 35%;
+    margin: 0 auto;
+    font-size: 50px;
+    color: #8eb50b;
+    font-weight: 800;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
