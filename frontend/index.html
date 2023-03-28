@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Form Örneği</title>
+</head>
+
+<body>
+    <!-- <h1>Form Örneği</h1>
+    <form id="my-form">
+        <label for="name">Ad:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="email">E-posta:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <button type="submit">Gönder</button>
+    </form> -->
+    <div id="response"></div>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <div class="mb-md-5 mt-md-4 pb-5">
+
+                                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                                <p class="text-white-50 mb-5">Please enter your Name and Last Name!</p>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                                    <label class="form-label" for="typeEmailX">Name</label>
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                                    <label class="form-label" for="typePasswordX">Last Name</label>
+                                </div>
+
+                                <button id="login-button" class="btn btn-outline-light btn-lg px-5"
+                                    type="submit">Login</button>
+
+                                <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                    <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                    <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                    <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Login butonuna tıklandığında çalışacak fonksiyon
+            $("#login-button").click(function (event) {
+                event.preventDefault(); // Sayfa yenilenmesini engelle
+
+                // Form verilerini al
+                var name = $("#typeEmailX").val();
+                var lastName = $("#typePasswordX").val();
+
+                // Verileri gönder
+                $.ajax({
+                    type: "POST",
+                    url: "/login",
+                    data: {
+                        name: name,
+                        lastName: lastName
+                    },
+                    success: function (response) {
+                        // Başarılı cevap göster
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Hata mesajı göster
+                        console.log("Hata: " + xhr.responseText);
+                    }
+                });
+            });
+        });
+        const nameInput = document.getElementById('typeEmailX');
+        const lastNameInput = document.getElementById('typePasswordX');
+        const loginButton = document.querySelector('button[type=submit]');
+
+        loginButton.addEventListener('click', (event) => {
+            event.preventDefault(); // formun submit olmasını engelle
+
+            const name = nameInput.value;
+            const lastName = lastNameInput.value;
+
+            const data = { name, lastName };
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+    </script>
+</body>
+
+</html>
