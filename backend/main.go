@@ -1,80 +1,44 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
 )
 
-// User struct for holding name and last name
-type User struct {
+type loginData struct {
 	Name     string `json:"name"`
-	LastName string `json:"last_name"`
+	LastName string `json:"lastName"`
 }
 
-// Database connection string
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "your-password"
-	dbname   = "your-dbname"
-)
-
-// InsertUser function inserts the given user to the database
-func InsertUser(user User) error {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	sqlStatement := `INSERT INTO users (name, last_name) VALUES ($1, $2)`
-
-	_, err = db.Exec(sqlStatement, user.Name, user.LastName)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// LoginHandler handles the login request
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	// Parse the request body
-	var user User
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	// Insert the user to the database
-	err = InsertUser(user)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Send the response
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "User added successfully")
+type response struct {
+	Message string `json:"message"`
 }
 
 func main() {
-	// Create a new router
-	r := mux.NewRouter()
+	fmt.Println("Port listening on...")
+	http.HandleFunc("/backend", func(w http.ResponseWriter, r *http.Request) {
+		// check if the request method is POST
+		if r.Method != "POST" {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
 
-	// Register the login route
-	r.HandleFunc("/login", LoginHandler).Methods("POST")
+		// decode the request body into a loginData struct
+		var data loginData
+		err := json.NewDecoder(r.Body).Decode(&data)
+		if err != nil {
+			http.Error(w, "Bad request", http.StatusBadRequest)
+			return
+		}
 
-	// Start the server
-	http.ListenAndServe(":8080", r)
+		// construct the response object
+		resp := response{Message: "Welcome, " + data.Name + " " + data.LastName + "!"}
+		// encode the response as JSON and send it back to the client
+		json.NewEncoder(w).Encode(resp)
+	})
+
+	// start the server on localhost:5500
+	log.Fatal(http.ListenAndServe("127.0.0.1:5500", nil))
 }
