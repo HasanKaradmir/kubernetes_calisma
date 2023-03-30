@@ -1,14 +1,17 @@
-FROM golang:latest
+FROM golang:alpine AS builder
 
-RUN mkdir /app
+WORKDIR /go/src/app
+
+COPY . .
+
+RUN go build -o webserver .
+
+FROM alpine
+
 WORKDIR /app
 
-RUN export GO111MODULE=on
-
-COPY . /app
-
-RUN go build -o main .
+COPY --from=builder /go/src/app/ /app/
 
 EXPOSE 444
 
-CMD ["/app/main"]
+CMD [ "./webserver" ]

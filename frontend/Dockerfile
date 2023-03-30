@@ -1,13 +1,13 @@
-FROM nginx:latest
+FROM nginx:stable-alpine3.17-slim
 
 
 LABEL maintainer="Hasan Karademir"
 LABEL version="1.0"
 LABEL name="frontend-app"
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends curl -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache curl && \
+    rm -rf /var/cache/apk/*
+
 
 WORKDIR /usr/share/nginx/html
 
