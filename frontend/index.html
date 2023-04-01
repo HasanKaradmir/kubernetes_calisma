@@ -67,14 +67,14 @@
           
               // send HTTP POST request to backend
               $.ajax({
-                url: 'http://backend:444/backend',
+                url: 'http://localhost:444/backend',
                 type: 'POST',
                 data: data,
                 headers: {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "access-control-allow-origin, access-control-allow-headers"},
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function(response) {
-                    window.location.href = "/welcome.html?name=" + name + "&lastName=" + lastName;
+                    window.location.href = "./welcome.html?name=" + name + "&lastName=" + lastName;
           
                 },
                 error: function(error) {
