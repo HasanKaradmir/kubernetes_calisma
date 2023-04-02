@@ -5,7 +5,7 @@ LABEL maintainer="Hasan Karademir"
 LABEL version="1.0"
 LABEL name="frontend-app"
 
-RUN apk add --no-cache curl && \
+RUN apk add --no-cache curl iputils && \
     rm -rf /var/cache/apk/*
 
 

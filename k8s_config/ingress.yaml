@@ -2,22 +2,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-uri: /$1
 spec:
   rules:
-  - host: 35.198.172.19
+  - host: fullstack.com
     http:
       paths:
-      - path: /
+      - path: /index.html
         pathType: Prefix
         backend:
           service:
-            name: frontend-service
+            name: frontendsvc
             port:
-              name: http
+              number: 80
+      - path: /welcome.html
+        pathType: Prefix
+        backend:
+          service:
+            name: frontendsvc
+            port:
+              number: 80
       - path: /backend
         pathType: Prefix
         backend:
           service:
-            name: backend-service
+            name: backend
             port:
-              name: http
+              number: 444
